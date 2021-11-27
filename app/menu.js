@@ -44,17 +44,17 @@ module.exports = class MenuBuilder {
 
   buildDarwinTemplate() {
     const subMenuAbout = {
-      label: 'BloomRPC',
+      label: 'DoomRPC',
       submenu: [
         {
-          label: 'About BloomRPC',
+          label: 'About DoomRPC',
           selector: 'orderFrontStandardAboutPanel:'
         },
         { type: 'separator' },
         { label: 'Services', submenu: [] },
         { type: 'separator' },
         {
-          label: 'Hide BloomRPC',
+          label: 'Hide DoomRPC',
           accelerator: 'Command+H',
           selector: 'hide:'
         },
