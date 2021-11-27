@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Button, Icon, Tooltip, Switch, Modal, Menu, Dropdown } from 'antd';
-import { setInteractive, setProtoVisibility, setGrpcWeb } from './actions';
+import {setInteractive, setProtoVisibility, setInsecure} from './actions';
 import { EditorAction } from './Editor';
 import {useState} from "react";
 import {TLSManager} from "./TLSManager";
@@ -10,14 +10,16 @@ interface OptionsProps {
   protoInfo: ProtoInfo
   dispatch: React.Dispatch<EditorAction>
   interactiveChecked: boolean
+  insecureChecked: boolean
   grpcWebChecked: boolean
   onInteractiveChange?: (chcked: boolean) => void
+  onInsecureChange?: (chcked: boolean) => void
   tlsSelected?: Certificate
   onTLSSelected?: (selected: Certificate) => void
   onClickExport?: () => void
 }
 
-export function Options({ protoInfo, dispatch, grpcWebChecked, interactiveChecked, onInteractiveChange, tlsSelected, onTLSSelected, onClickExport }: OptionsProps) {
+export function Options({ protoInfo, dispatch, grpcWebChecked, interactiveChecked, insecureChecked, onInteractiveChange, onInsecureChange, tlsSelected, onTLSSelected, onClickExport }: OptionsProps) {
 
   const [tlsModalVisible, setTlsModalVisible] = useState(false);
 
@@ -34,7 +36,7 @@ export function Options({ protoInfo, dispatch, grpcWebChecked, interactiveChecke
                   type={tlsSelected ? "lock" : "unlock"}
                   style={{
                     fontSize: 18,
-                    color: tlsSelected ? "#28d440" : "#bdbcbc",
+                    color: tlsSelected ? "#ff0000" : "#bdbcbc",
                   }}
               />
             </Tooltip>
@@ -85,16 +87,6 @@ export function Options({ protoInfo, dispatch, grpcWebChecked, interactiveChecke
         </Dropdown>
         <div style={{paddingRight: 10}}>
           <Switch
-            checkedChildren="WEB &nbsp;"
-            defaultChecked={grpcWebChecked}
-            unCheckedChildren="GRPC"
-            onChange={(checked) => {
-              dispatch(setGrpcWeb(checked));
-            }}
-          />
-        </div>
-        <div style={{paddingRight: 10}}>
-          <Switch
             checkedChildren="Interactive"
             defaultChecked={interactiveChecked}
             unCheckedChildren="Manual &nbsp; &nbsp; &nbsp;"
@@ -103,8 +95,19 @@ export function Options({ protoInfo, dispatch, grpcWebChecked, interactiveChecke
               onInteractiveChange && onInteractiveChange(checked);
             }}
           />
-        </div>
 
+        </div>
+          <div style={{paddingRight: 10}}>
+              <Switch
+                  checkedChildren="--insecure"
+                  defaultChecked={insecureChecked}
+                  unCheckedChildren="no --insecure &nbsp; &nbsp; &nbsp;"
+                  onChange={(checked) => {
+                      dispatch(setInsecure(checked));
+                      onInsecureChange && onInsecureChange(checked);
+                  }}
+              />
+          </div>
         <Button
           icon="file-ppt"
           type="dashed"

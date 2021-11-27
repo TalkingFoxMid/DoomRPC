@@ -136,7 +136,7 @@ export async function loadProtoFromReflection(host: string, onProtoUploaded?: On
  * @param importPaths
  * @param onProtoUploaded
  */
-export async function loadProtosFromFile(filePaths: string[], importPaths?: string[], onProtoUploaded?: OnProtoUpload): Promise<ProtoFile[]> {
+export async function loadProtosFromFile(filePaths: string[], importPaths?: string[], onProtoUploaded?: OnProtoUpload, isRetry: boolean = false ): Promise<ProtoFile[]> {
   try {
     const protos = await Promise.all(filePaths.map((fileName) =>
       fromFileName(fileName, [
@@ -163,15 +163,21 @@ export async function loadProtosFromFile(filePaths: string[], importPaths?: stri
     return protoList;
 
   } catch (e) {
-    console.error(e);
-    onProtoUploaded && onProtoUploaded([], e);
+    if (isRetry) {
+      console.error(e);
+      onProtoUploaded && onProtoUploaded([], e);
 
-    if (!onProtoUploaded) {
-      throw e;
+      if (!onProtoUploaded) {
+        throw e;
+      }
+
+      return [];
+    } else {
+      return loadProtosFromFile( filePaths, importPaths, onProtoUploaded,isRetry = true)
     }
-
-    return [];
   }
+
+
 }
 
 /**

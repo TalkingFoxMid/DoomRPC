@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useEffect, useReducer } from 'react';
 import {
   actions,
-  setData, setEnvironment, setInteractive,
+  setData, setEnvironment, setInteractive, setInsecure,
   setMetadata,
   setMetadataVisibilty,
   setProtoVisibility,
@@ -35,7 +35,8 @@ export interface EditorEnvironment {
   name: string
   url: string
   metadata: string,
-  interactive: boolean
+  interactive: boolean,
+  insecure: boolean,
   tlsCertificate: Certificate,
 }
 
@@ -47,7 +48,8 @@ export interface EditorRequest {
   interactive: boolean
   environment?: string
   grpcWeb: boolean
-  tlsCertificate?: Certificate
+  tlsCertificate?: Certificate,
+  insecure: boolean
 }
 
 export interface EditorState extends EditorRequest {
@@ -93,6 +95,7 @@ const INITIAL_STATE: EditorState = {
   streamCommitted: false,
   tlsCertificate: undefined,
   call: undefined,
+  insecure: true
 };
 
 /**
@@ -129,6 +132,9 @@ const reducer = (state: EditorState, action: EditorAction) => {
 
     case actions.SET_INTERACTIVE:
       return { ...state, interactive: action.interactive };
+
+    case actions.SET_INSECURE:
+      return { ...state, insecure: action.insecure}
 
     case actions.SET_GRPC_WEB:
       return { ...state, grpcWeb: action.grpcWeb };
@@ -212,6 +218,7 @@ export function Editor({ protoInfo, initialRequest, onRequestChange, onEnvironme
                 dispatch(setEnvironment(environment.name));
                 dispatch(setTSLCertificate(environment.tlsCertificate));
                 dispatch(setInteractive(environment.interactive));
+                dispatch(setInsecure(environment.insecure))
 
                 onRequestChange && onRequestChange({
                   ...state,
@@ -240,6 +247,7 @@ export function Editor({ protoInfo, initialRequest, onRequestChange, onEnvironme
                   interactive: state.interactive,
                   metadata: state.metadata,
                   tlsCertificate: state.tlsCertificate,
+                  insecure: state.insecure
                 });
 
                 dispatch(setEnvironment(environmentName));
@@ -269,6 +277,7 @@ export function Editor({ protoInfo, initialRequest, onRequestChange, onEnvironme
             dispatch={dispatch}
             grpcWebChecked={state.grpcWeb}
             interactiveChecked={state.interactive}
+            insecureChecked={state.insecure}
             onClickExport={async () => {
               await exportResponseToJSONFile(protoInfo, state)
             }}
@@ -276,6 +285,12 @@ export function Editor({ protoInfo, initialRequest, onRequestChange, onEnvironme
               onRequestChange && onRequestChange({
                 ...state,
                 interactive: checked,
+              });
+            }}
+            onInsecureChange={(checked) => {
+              onRequestChange && onRequestChange({
+                ...state,
+                insecure: checked,
               });
             }}
             tlsSelected={state.tlsCertificate}

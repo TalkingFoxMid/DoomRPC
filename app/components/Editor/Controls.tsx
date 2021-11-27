@@ -82,7 +82,7 @@ const styles = {
     borderRight: "none"
   },
   commit: {
-    background: "#28d440",
+    background: "#ff0000",
     color: "white",
     padding: "10px",
     paddingLeft: "12px",

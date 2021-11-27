@@ -78,7 +78,7 @@ export function PathResolution({ importPaths, onImportsChange }: PathResolutionP
                   ) : (
                       <Tooltip placement="top" title="Add">
                         <Icon
-                            style={{color: '#28d440', fontSize: 18, cursor: "pointer", marginTop: 5}}
+                            style={{color: '#ff0000', fontSize: 18, cursor: "pointer", marginTop: 5}}
                             type="plus"
                             onClick={() => {
                               const pathAdded = addImportPath(pathValue, importPaths, onImportsChange);

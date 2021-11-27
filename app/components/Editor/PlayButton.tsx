@@ -7,17 +7,18 @@ import {
   setIsLoading,
   setResponse,
   setResponseStreamData,
-  setRequestStreamData,
-  addResponseStreamData, setStreamCommitted
+  setRequestStreamData, setStreamCommitted
 } from './actions';
 import { ControlsStateProps } from './Controls';
-import { GRPCEventType, GRPCRequest, ResponseMetaInformation, GRPCEventEmitter, GRPCWebRequest } from '../../behaviour';
+import { GRPCEventType, GRPCRequest, GRPCEventEmitter, GRPCWebRequest } from '../../behaviour';
+import {exec, ExecException} from "child_process";
 
 export const makeRequest = ({ dispatch, state, protoInfo }: ControlsStateProps) => {
   // Do nothing if not set
   if (!protoInfo) {
     return;
   }
+
 
   // Cancel the call if ongoing.
   if (state.loading && state.call) {
@@ -61,34 +62,18 @@ export const makeRequest = ({ dispatch, state, protoInfo }: ControlsStateProps) 
   }
 
   dispatch(setResponseStreamData([]));
-
-  grpcRequest.on(GRPCEventType.ERROR, (e: Error, metaInfo: ResponseMetaInformation) => {
-    dispatch(setResponse({
-      responseTime: metaInfo.responseTime,
-      output: JSON.stringify({
-        error: e.message,
-      }, null, 2)
-    }));
-  });
-
-  grpcRequest.on(GRPCEventType.DATA, (data: object, metaInfo: ResponseMetaInformation) => {
-    if (metaInfo.stream && state.interactive) {
-      dispatch(addResponseStreamData({
-        output: JSON.stringify(data, null, 2),
-        responseTime: metaInfo.responseTime,
-      }));
-    } else {
+    exec(`/usr/local/bin/grpcurl ${state.insecure ? "-insecure" : ""} -d '${state.data}' ${state.url} ${protoInfo.service.serviceName}/${protoInfo.methodName}\n`, (e: ExecException, sout: string, ssin: string) => {
       dispatch(setResponse({
-        responseTime: metaInfo.responseTime,
-        output: JSON.stringify(data, null, 2),
+        responseTime: 666,
+        output: sout || e.message,
       }));
-    }
-  });
+    });
 
   grpcRequest.on(GRPCEventType.END, () => {
     dispatch(setIsLoading(false));
     dispatch(setCall(undefined));
     dispatch(setStreamCommitted(false));
+
   });
 
   try {
@@ -142,7 +127,7 @@ export function PlayButton({ dispatch, state, protoInfo, active }: ControlsState
 const styles = {
   playIcon: {
     fontSize: 50,
-    color: "#28d440",
+    color: "#ff0000",
     border: "3px solid rgb(238, 238, 238)",
     borderRadius: "50%",
     cursor: "pointer",

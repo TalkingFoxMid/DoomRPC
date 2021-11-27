@@ -280,7 +280,7 @@ const styles = {
     marginBottom: 7,
     marginRight: 12,
     marginTop: -2,
-    color: "#28d440",
+    color: "#ff0000",
     border: "2px solid #f3f6f9",
     borderRadius: "50%",
     cursor: "pointer"

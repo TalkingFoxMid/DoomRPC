@@ -11,6 +11,7 @@ const actions = {
   SET_METADATA_VISIBILITY: "SET_METADATA_VISIBILITY",
   SET_PROTO_VISIBILITY: "SET_PROTO_VIEW",
   SET_INTERACTIVE: "SET_INTERACTIVE",
+  SET_INSECURE: "SET_INSECURE",
   SET_GRPC_WEB: "SET_GRPC_WEB",
   SET_REQUEST_STREAM_DATA: "SET_REQUEST_STREAM_DATA",
   SET_RESPONSE_STREAM_DATA: "SET_RESPONSE_STREAM_DATA",
@@ -58,6 +59,10 @@ export function setGrpcWeb(grpcWeb: boolean) {
 
 export function setInteractive(interactive: boolean) {
   return { type: actions.SET_INTERACTIVE, interactive };
+}
+
+export function setInsecure(insecure: boolean) {
+  return {type: actions.SET_INSECURE, insecure};
 }
 
 export function setRequestStreamData(requestData: string[]) {

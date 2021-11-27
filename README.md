@@ -1,7 +1,10 @@
 <p align="center">
-  <img src="./resources/logo.svg" width="256" height="256"/>
+  <img src="https://user-images.githubusercontent.com/61117937/143660005-ecf3d152-396c-4c47-a0c7-24635dc0ddee.png" width="256" height="256"/>
 </p>
-<h1 align="center">BloomRPC</h1>
+<h1 align="center">DoomRPC</h1>
+
+<h2 align="center">Forked from https://github.com/bloomrpc/bloomrpc</h2>
+<h3 align="center"> GRPC engine was replaced with grpcurl</h3>
 
 <p align="center">
   <img src="https://img.shields.io/github/release/uw-labs/bloomrpc.svg" />
