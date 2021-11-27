@@ -56,7 +56,7 @@ const styles = {
   },
   introTitle: {
     userSelect: "none" as "none",
-    color: "rgba(17, 112, 134, 0.58)",
+    color: "rgba(189, 33, 33, 0.58)",
     fontSize: "25px",
     top: "120px",
   },

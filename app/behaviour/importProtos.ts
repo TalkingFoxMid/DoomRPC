@@ -173,7 +173,9 @@ export async function loadProtosFromFile(filePaths: string[], importPaths?: stri
 
       return [];
     } else {
-      return loadProtosFromFile( filePaths, importPaths, onProtoUploaded,isRetry = true)
+      const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+      return wait(1000).then(_ => loadProtosFromFile(filePaths, importPaths, onProtoUploaded,isRetry = true))
     }
   }
 
