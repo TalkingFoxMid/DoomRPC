@@ -28,4 +28,4 @@ build_script:
 
 artifacts:
   - path: "release\\*"
-    name: BloomRPC
+    name: DoomRPC

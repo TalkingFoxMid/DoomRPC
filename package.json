@@ -1,6 +1,6 @@
 {
   "name": "bloomrpc",
-  "productName": "BloomRPC",
+  "productName": "DoomRPC",
   "version": "1.5.3",
   "description": "GRPC GUI client",
   "main": "main.js",
@@ -35,7 +35,7 @@
     ]
   },
   "build": {
-    "productName": "BloomRPC",
+    "productName": "DoomRPC",
     "appId": "io.github.utilitywarehouse.BloomRPC",
     "extraResources": [
       {
